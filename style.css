@@ -924,7 +924,7 @@ body {
     position: relative;
     width: 100%;
     max-width: 320px;
-    height: 160px;
+    min-height: 220px;
     margin: 20px auto;
     border-radius: 15px;
     overflow: hidden;
