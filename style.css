@@ -1144,6 +1144,7 @@ body {
         flex-direction: column;
     }
 
+    .content__letter .left,
     .content__letter .right {
         width: 100%;
         position: relative;
@@ -1152,21 +1153,6 @@ body {
     .text__letter p {
         font-size: 1.15rem;
         text-align: justify;
-    }
-
-    .love__img {
-        position: relative;
-        display: block;
-        margin: -10px auto 10px;
-        width: 120px;
-        right: auto;
-        bottom: auto;
-        z-index: 5;
-    }
-
-    .love__img img {
-        width: 100%;
-        filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.1));
     }
 }
 
