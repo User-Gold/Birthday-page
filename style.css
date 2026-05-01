@@ -672,6 +672,22 @@ body {
 }
 
 /* Main Letter Modal */
+.letter {
+    max-height: 80vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 5px;
+}
+
+.letter::-webkit-scrollbar {
+    width: 6px;
+}
+
+.letter::-webkit-scrollbar-thumb {
+    background: var(--light-pink);
+    border-radius: 10px;
+}
+
 .title__letter {
     text-align: center;
     font-family: 'Caveat', cursive;
