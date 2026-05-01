@@ -24,7 +24,15 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </head>
 
-<body>
+<body class="loading">
+    <!-- Preloader / Countdown Overlay -->
+    <div id="preloader-overlay">
+        <div class="preloader-content">
+            <h1 id="countdown-text">Are you ready?</h1>
+            <button id="btn__start-experience" class="shimmer-btn">Click Here! ✨</button>
+        </div>
+    </div>
+
     <!-- Background Music -->
     <audio id="bday-audio" loop autoplay>
         <source src="music.mpeg" type="audio/mpeg">
@@ -253,25 +261,63 @@
            ================================== */
         let music = document.getElementById("bday-audio");
 
-        // Attempt to play immediately on load
+        // Attempt to play immediately on load (will likely be blocked, handled by start button)
         $(document).ready(function () {
-            fireConfetti();
-            music.play().catch(e => console.log("Autoplay blocked by browser. Waiting for interaction."));
+            // Remove the automatic play since we now have a start button
         });
 
-        // Fallback: Play on first interaction (Required by modern browsers)
-        window.addEventListener('click', function () {
+        /* ==================================
+           PRELOADER & COUNTDOWN LOGIC
+           ================================== */
+        $("#btn__start-experience").on("click", function () {
+            $(this).hide();
+            
+            // Play music now that we have user interaction!
             if (music.paused) music.play();
-        }, { once: true });
-        window.addEventListener('touchstart', function () {
-            if (music.paused) music.play();
-        }, { once: true });
+            
+            let count = 5;
+            let countdownEl = $("#countdown-text");
+            
+            // Initial Pop
+            countdownEl.text(count).css("transform", "scale(1.5)");
+            setTimeout(() => countdownEl.css("transform", "scale(1)"), 200);
+
+            let countdownInterval = setInterval(function () {
+                count--;
+                if (count > 0) {
+                    countdownEl.text(count).css("transform", "scale(1.5)");
+                    setTimeout(() => countdownEl.css("transform", "scale(1)"), 200);
+                } else {
+                    clearInterval(countdownInterval);
+                    countdownEl.text("Happy Birthday Madhu! 🎉")
+                               .css("color", "#ff4d6d")
+                               .css("font-size", "clamp(2rem, 7vw, 4rem)")
+                               .css("transform", "scale(1.5)");
+                    
+                    // The Pop effect!
+                    setTimeout(() => countdownEl.css("transform", "scale(1)"), 200);
+                    
+                    fireConfetti();
+                    
+                    setTimeout(() => {
+                        $("#preloader-overlay").css("opacity", "0");
+                        setTimeout(() => {
+                            $("#preloader-overlay").hide();
+                            // Start Page Animations!
+                            $("body").removeClass("loading");
+                            startPageAnimations();
+                        }, 1000);
+                    }, 1000);
+                }
+            }, 1000);
+        });
 
         /* ==================================
            STAGGERED TYPING ANIMATION
            ================================== */
-        setTimeout(function () {
-            let timeDatetxt = setInterval(function () {
+        function startPageAnimations() {
+            setTimeout(function () {
+                let timeDatetxt = setInterval(function () {
                 if (currentIndex < charArrDate.length) {
                     date__of__birth.textContent += charArrDate[currentIndex];
                     currentIndex++;
@@ -280,6 +326,7 @@
                 }
             }, 100);
         }, 3800);
+        }
 
         /* ==================================
            MAIN LETTER LOGIC
@@ -503,6 +550,10 @@
         $("#btn__memories").on("click", function () {
             $("#memories-modal").css("display", "flex").hide().fadeIn(400);
             setTimeout(() => $("#memories-modal .letter__border").addClass("active"), 100);
+            
+            // Hide close button initially so user must view all memories
+            $(".btn-close-memories").hide();
+            
             initPolaroids();
         });
 
@@ -518,6 +569,9 @@
 
         $("#btn__restart_memories").on("click", function () {
             $(".memory-end-message").fadeOut(300);
+            // Hide close button again when restarting
+            $(".btn-close-memories").fadeOut(300);
+            
             setTimeout(() => {
                 $(".memories-instruction").fadeIn(300);
                 initPolaroids();
@@ -581,10 +635,13 @@
 
                 setTimeout(() => {
                     $this.hide();
-                    // If last one is thrown, show the final message
+                    // If last one is thrown, show the final message and the close button
                     if ($(".polaroid:visible").length === 0) {
                         $(".memories-instruction").fadeOut(300);
-                        setTimeout(() => $(".memory-end-message").fadeIn(500), 300);
+                        setTimeout(() => {
+                            $(".memory-end-message").fadeIn(500);
+                            $(".btn-close-memories").fadeIn(500); // Enable Close (X) button
+                        }, 300);
                     }
                 }, 600);
             });

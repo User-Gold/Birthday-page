@@ -37,9 +37,17 @@ body {
 }
 
 @keyframes gradientBG {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
 /* Background Bubbles */
@@ -401,13 +409,30 @@ body {
     animation: iconPulse 2s infinite ease-in-out;
 }
 
-#btn__cake { animation-delay: 0s; }
-#btn__scratch { animation-delay: 0.2s; }
-#btn__memories { animation-delay: 0.4s; }
+#btn__cake {
+    animation-delay: 0s;
+}
+
+#btn__scratch {
+    animation-delay: 0.2s;
+}
+
+#btn__memories {
+    animation-delay: 0.4s;
+}
 
 @keyframes iconPulse {
-    0%, 100% { transform: scale(1); box-shadow: 0 8px 20px rgba(255, 133, 161, 0.2); }
-    50% { transform: scale(1.1); box-shadow: 0 12px 25px rgba(255, 71, 126, 0.4); }
+
+    0%,
+    100% {
+        transform: scale(1);
+        box-shadow: 0 8px 20px rgba(255, 133, 161, 0.2);
+    }
+
+    50% {
+        transform: scale(1.1);
+        box-shadow: 0 12px 25px rgba(255, 71, 126, 0.4);
+    }
 }
 
 .icon-btn:hover {
@@ -461,13 +486,25 @@ body {
 }
 
 @keyframes floatBox {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-15px); }
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-15px);
+    }
 }
 
 @keyframes pulseGlow {
-    from { box-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 71, 126, 0.4); }
-    to { box-shadow: 0 0 30px rgba(255, 255, 255, 1), 0 0 60px rgba(255, 71, 126, 0.7); }
+    from {
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 71, 126, 0.4);
+    }
+
+    to {
+        box-shadow: 0 0 30px rgba(255, 255, 255, 1), 0 0 60px rgba(255, 71, 126, 0.7);
+    }
 }
 
 .image img {
@@ -1177,29 +1214,47 @@ body {
    ================================== */
 .memories-card {
     text-align: center;
-    overflow: hidden;
-    height: 80vh;
+    overflow: visible;
+    height: 92vh;
     display: flex;
     flex-direction: column;
+    padding-top: 5px;
+}
+
+.memories-card .title__letter {
+    position: relative;
+    z-index: 20;
+    flex-shrink: 0;
+    font-size: 1.8rem;
+    margin-bottom: 5px;
+    padding-bottom: 5px;
+}
+
+/* Keep close button always on top and clickable */
+.memories-card ~ .close,
+.memories-card + .close,
+.letter__border .btn-close-memories {
+    z-index: 100;
+    pointer-events: all;
 }
 
 .polaroid-stack-container {
     position: relative;
     width: 100%;
-    height: 100%;
-    margin-top: 20px;
+    flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
     perspective: 1000px;
+    overflow: hidden;
 }
 
 .polaroid {
     position: absolute;
-    width: clamp(200px, 60vw, 300px);
-    height: clamp(250px, 75vw, 380px);
+    width: clamp(170px, 52vw, 270px);
+    height: clamp(210px, 65vw, 340px);
     background: #fff;
-    padding: 10px 10px 45px 10px; /* Polaroid bottom border */
+    padding: 10px 10px 40px 10px;
     border-radius: 5px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.6s ease;
@@ -1211,9 +1266,11 @@ body {
 .polaroid img {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Automatically crops image nicely */
+    object-fit: cover;
+    /* Automatically crops image nicely */
     border-radius: 3px;
-    filter: brightness(1.2) contrast(1.1) saturate(1.1); /* Brighter, punchier colors */
+    filter: brightness(1.2) contrast(1.1) saturate(1.1);
+    /* Brighter, punchier colors */
 }
 
 .polaroid:hover {
@@ -1233,12 +1290,60 @@ body {
 }
 
 @keyframes gentlePulse {
-    0%, 100% { transform: scale(1); box-shadow: 0 10px 20px rgba(255, 71, 126, 0.4); }
-    50% { transform: scale(1.05); box-shadow: 0 15px 30px rgba(255, 71, 126, 0.7); }
+
+    0%,
+    100% {
+        transform: scale(1);
+        box-shadow: 0 10px 20px rgba(255, 71, 126, 0.4);
+    }
+
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 15px 30px rgba(255, 71, 126, 0.7);
+    }
 }
 
 #btn__letter:hover {
     animation: none;
     transform: translateY(-5px) scale(1.02);
     box-shadow: 0 15px 25px rgba(255, 71, 126, 0.6);
+}
+
+/* ==================================
+   5. PRELOADER COUNTDOWN
+   ================================== */
+body.loading #wrapper * {
+    animation-play-state: paused !important;
+}
+
+#preloader-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, #240046 0%, #000 100%);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 1s ease;
+}
+
+.preloader-content {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+}
+
+#countdown-text {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 800;
+    font-size: clamp(3rem, 10vw, 6rem);
+    color: #ff4d6d; /* Light Red */
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), color 0.3s ease;
+    margin: 0;
+    letter-spacing: 2px;
 }
