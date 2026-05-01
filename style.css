@@ -1246,13 +1246,13 @@ body {
     justify-content: center;
     align-items: center;
     perspective: 1000px;
-    overflow: hidden;
+    overflow: visible;
 }
 
 .polaroid {
     position: absolute;
-    width: clamp(240px, 78vw, 320px);
-    height: clamp(300px, 97vw, 400px);
+    width: clamp(220px, 70vw, 300px);
+    height: clamp(270px, 88vw, 380px);
     background: #fff;
     padding: 10px 10px 50px 10px;
     border-radius: 5px;
